@@ -4,6 +4,7 @@ import json
 import logging
 
 from application_services.imdb_artists_resource import IMDBArtistResource
+from application_services.students_resource import StudentsResource
 from application_services.UsersResource.user_service import UserResource
 from database_services.RDBService import RDBService as RDBService
 
@@ -27,9 +28,15 @@ def get_artists_by_prefix(prefix):
     return rsp
 
 
-@app.route('/users')
-def get_users():
-    res = UserResource.get_by_template(None)
+@app.route('/users/')
+def get_total_users_info():
+    res = UserResource.get_users_info()
+    rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
+    return rsp
+
+@app.route('/users/<prefix>')
+def get_users_name_prefix(prefix):
+    res = StudentsResource.get_by_name_prefix(prefix)
     rsp = Response(json.dumps(res, default=str), status=200, content_type="application/json")
     return rsp
 
